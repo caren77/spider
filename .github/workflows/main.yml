@@ -1,0 +1,28 @@
+name: Daily Spider
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天北京时间上午 8 点自动运行
+  workflow_dispatch:      # 允许手动点按钮运行
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          # 检查是否有 requirements.txt，有就安装
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # 如果你没有 requirements.txt，也可以在这里手动写，比如：
+          # pip install requests beautifulsoup4
+
+      - name: Run spider
+        run: python homeworkbug.py
